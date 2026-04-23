@@ -2,12 +2,23 @@ import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { useVideoPlayer, VideoView } from 'react-native-video';
+import Orientation from 'react-native-orientation-locker';
 
 const VideoPlayerScreen = () => {
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const player = useVideoPlayer('https://www.w3schools.com/html/mov_bbb.mp4');
+  //screen orientation
+  const toggleFullscreen = () => {
+    if (isFullscreen) {
+      Orientation.lockToPortrait();
+    } else {
+      Orientation.lockToLandscape();
+    }
+    setIsFullscreen(!isFullscreen);
+  };
   //handles the play pause state
   const togglePlay = () => {
     if (paused) {
@@ -49,6 +60,9 @@ const VideoPlayerScreen = () => {
         </Btn>
         <Btn onPress={toggleMute}>
           <BtnText>{muted ? '🔕' : '🔔'}</BtnText>
+        </Btn>
+        <Btn onPress={toggleFullscreen}>
+          <BtnText> {isFullscreen ? '📱' : '↔️'}</BtnText>
         </Btn>
       </Buttons>
     </Container>
